@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Crown -->
+  <path d="M20 30 L50 10 L80 30 L70 40 L50 25 L30 40 Z" fill="gold"/>
+  
+  <!-- Face -->
+  <circle cx="50" cy="60" r="25" fill="#FFE0B2"/>
+  
+  <!-- Eyes -->
+  <circle cx="40" cy="55" r="3" fill="#4E342E"/>
+  <circle cx="60" cy="55" r="3" fill="#4E342E"/>
+  
+  <!-- Nose -->
+  <path d="M50 60 L53 65 L47 65 Z" fill="#4E342E"/>
+  
+  <!-- Mouth -->
+  <path d="M40 70 Q50 75 60 70" fill="none" stroke="#4E342E" stroke-width="2"/>
+  
+  <!-- Beard -->
+  <path d="M30 65 Q50 90 70 65" fill="#8D6E63"/>
+</svg>
