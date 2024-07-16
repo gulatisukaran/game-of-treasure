@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 
 interface Message {
   id: number;
@@ -7,26 +8,47 @@ interface Message {
 }
 
 const ChatDialog1: React.FC = () => {
-  const [messages, setMessages] = useState<Message[]>([
-    { id: 1, sender: 'Zara', text: 'Hey Bob, how are you?' },
-    { id: 2, sender: 'You', text: 'Hi Alice! I\'m doing great, thanks for asking. How about you?' },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
-  const [currentSender, setCurrentSender] = useState<'Zara' | 'You'>('Zara');
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleSendMessage = (e: React.FormEvent<HTMLFormElement>) => {
+  const postData = async (userQuestion: string) => {
+    try {
+      const res = await axios.post('http://localhost:3000/npc/grimble', {
+        question: userQuestion,
+      });
+      return res.data; // Return the response data
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+      return { message: 'An error occurred' }; // Return a default error message
+    }
+  };
+
+  const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (newMessage.trim() === '') return;
 
+    setLoading(true);
+
     const newMsg: Message = {
       id: messages.length + 1,
-      sender: currentSender,
+      sender: 'You',
       text: newMessage.trim(),
     };
 
-    setMessages([...messages, newMsg]);
+    // Post the new message and get the response
+    const response = await postData(newMsg.text);
+    console.log(response);
+
+    // Update the messages state with the new message and the response from the server
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      newMsg,
+      { id: prevMessages.length + 2, sender: 'Zara', text: response.rows[0].response },
+    ]);
+
     setNewMessage('');
-    setCurrentSender(currentSender === 'Zara' ? 'You' : 'Zara');
+    setLoading(false);
   };
 
   return (
@@ -57,15 +79,19 @@ const ChatDialog1: React.FC = () => {
           <input
             type="text"
             value={newMessage}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewMessage(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setNewMessage(e.target.value)
+            }
             placeholder="Type a message..."
             className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={loading}
           />
           <button
             type="submit"
             className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={loading}
           >
-            Send
+            {loading ? 'Sending...' : 'Send'}
           </button>
         </div>
       </form>

@@ -213,7 +213,9 @@ const GameView: React.FC = () => {
             <path d={`M${characterSize/3},${characterSize*2/3} Q${characterSize/2},${characterSize*4/5} ${characterSize*2/3},${characterSize*2/3}`} stroke="white" fill="none" />
             {/* Display distance */}
             <text x={characterSize/2} y={-5} textAnchor="middle" fill="black" fontSize="10">
-              {char.distanceToPlayer.toFixed(2)}
+              {char.id === 0 && "Zara"}
+              {char.id === 1 && "Grimble"}
+              {char.id === 2 && "Lady Whisper"}
             </text>
           </g>
         ))}
@@ -225,6 +227,9 @@ const GameView: React.FC = () => {
             <circle cx={characterSize/3} cy={characterSize/3} r={2} fill="white" />
             <circle cx={characterSize*2/3} cy={characterSize/3} r={2} fill="white" />
             <path d={`M${characterSize/3},${characterSize*2/3} Q${characterSize/2},${characterSize*4/5} ${characterSize*2/3},${characterSize*2/3}`} stroke="white" fill="none" />
+            <text x={characterSize/2} y={-5} textAnchor="middle" fill="black" fontSize="10">
+              {"You"}
+            </text>
         </g>
 
       </svg>

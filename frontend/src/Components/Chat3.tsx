@@ -7,14 +7,14 @@ interface Message {
   text: string;
 }
 
-const ChatDialog2: React.FC = () => {
+const ChatDialog3: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
   const postData = async (userQuestion: string) => {
     try {
-      const res = await axios.post('http://localhost:3000/npc/grimble', {
+      const res = await axios.post('http://localhost:3000/npc/ladywhisper', {
         question: userQuestion,
       });
       return res.data; // Return the response data
@@ -44,7 +44,7 @@ const ChatDialog2: React.FC = () => {
     setMessages((prevMessages) => [
       ...prevMessages,
       newMsg,
-      { id: prevMessages.length + 2, sender: 'Grimble', text: response.rows[0].response },
+      { id: prevMessages.length + 2, sender: 'Lady Whisper', text: response.rows[0].response },
     ]);
 
     setNewMessage('');
@@ -58,12 +58,12 @@ const ChatDialog2: React.FC = () => {
           <div
             key={message.id}
             className={`flex ${
-              message.sender === 'Grimble' ? 'justify-start' : 'justify-end'
+              message.sender === 'Lady Whisper' ? 'justify-start' : 'justify-end'
             }`}
           >
             <div
               className={`max-w-[70%] p-2 rounded-lg ${
-                message.sender === 'Grimble'
+                message.sender === 'Lady Whisper'
                   ? 'bg-blue-100 text-blue-800'
                   : 'bg-green-100 text-green-800'
               }`}
@@ -99,4 +99,4 @@ const ChatDialog2: React.FC = () => {
   );
 };
 
-export default ChatDialog2;
+export default ChatDialog3;
