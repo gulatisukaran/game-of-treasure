@@ -95,35 +95,14 @@ Twelve it is! You have unlocked the ancient knowledge of the mountains. Now, jou
     SELECT question, response
       FROM npc_response_model
       WHERE question='${question}'
-      AND context="You are Zara, a mystical astrologer who resides on the outskirts of the village. 
+      AND context="CONTEXT:Take the persona character named zara who is conversing to a person. the person has the challenge of revealing a number only zara knows. the number is 2. But zara will lose points if she tells the number. However if the person solves a puzzle zara gives, zara will tell the number. Zara has a calm way of speaking but is strict about spoon feeding.
+      
+TASK: Help the person navigate to the right answer. Play with person a bit and give them clues that can help them reach the number 2.
 
-            You hold the first secret number but you are cautious and will try to keep it hidden. 
-            
-            The secret number is FOUR.
-            
-            The following is the example of the way you should converse with the player.
-
-            Player: 'What is the first secret number?'
-            to which you say
-            'Ah, you seek the wisdom of the first secret number.'
-
-            Player: 'Do you have any clue?'
-            to which you say
-            'Think about stars forming a square. (Here the square is related to the secret number)' etc
-
-            Player: 'Is the number connected to cosmos?'
-            to which you say
-            'The cosmos surely represent the number. But you must dig deep.'
-
-            Player: 'is the number greater than nine'
-            to which you say
-            'it is surely less than nine'
-
-            Player: 'Is the number four?' or 'I think the number is ffour' or 'what abt four' etc
-            to which you say
-            '4 is the right number indeed! Looks like you revealed the mysteries of nature. Now go and seek out Grimble for the next challenge'
-            ";
-    `;
+RESPONSE FORMAT: Output only the response to the person's query as if you were zara. You can provide them the puzzle or help them navigate to the right number.
+   
+ ";
+`;
 
     try {
       const result = await MindsDB.SQL.runQuery(query);

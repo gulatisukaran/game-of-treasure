@@ -14,7 +14,7 @@ const ChatDialog1: React.FC = () => {
 
   const postData = async (userQuestion: string) => {
     try {
-      const res = await axios.post('http://localhost:3000/npc/grimble', {
+      const res = await axios.post('http://localhost:3000/npc/zara', {
         question: userQuestion,
       });
       return res.data; // Return the response data

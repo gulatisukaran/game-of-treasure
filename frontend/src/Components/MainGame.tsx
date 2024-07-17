@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import TreasureTrunk from './TreasureTrunk';
 import KingSvg from './KingSvg';
 
 interface Character {
@@ -27,13 +28,17 @@ const GameView: React.FC = () => {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [player, setPlayer] = useState<Player>({ x: 400, y: 300, vx: 0, vy: 0 });
   const requestRef = useRef<number>();
-  const canvasWidth = 800;
-  const canvasHeight = 600;
-  const characterSize = 20;
+  const canvasWidth = 1020;
+  const canvasHeight = 720;
+  const characterSize = 40;
   const numCharacters = 3;
   const playerSpeed = 5;
   const playerRef = useRef<Player>({ x: 400, y: 300, vx: 0, vy: 0 });
   const pauseDistance = 20; // Distance threshold for pausing characters
+
+  const handleTreasureClicked = () => {
+    navigate('/treasure');
+  }
 
   const calculateDistance = (x1: number, y1: number, x2: number, y2: number): number => {
     return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
@@ -154,12 +159,12 @@ const GameView: React.FC = () => {
               newVx *= -1;
               newX = Math.max(0, Math.min(newX, canvasWidth - characterSize));
             }
-            if (newY <= 0 || newY >= canvasHeight - characterSize) {
+            if (newY <= 100 || newY >= canvasHeight - characterSize) {
               newVy *= -1;
               newY = Math.max(0, Math.min(newY, canvasHeight - characterSize));
             }
-            
-
+  
+  
             if (Math.random() < 0.06) {
               newVx = (Math.random() - 0.5) * 2;
               newVy = (Math.random() - 0.5) * 2;
@@ -197,44 +202,52 @@ const GameView: React.FC = () => {
   }, [onCharacterClose]);
 
   return (
-    <div className="flex justify-center items-start h-screen bg-neutral-800">
-      <svg width={canvasWidth} height={canvasHeight} className="bg-white ">
-      <div className='h-150 w-150'>
-        <KingSvg width="100%" height="100%" viewBox="0 0 100 100" />
-      </div>
-        
-        {/* AI Characters */}
-        {characters.map(char => (
-          <g key={char.id} transform={`translate(${char.x},${char.y})`}>
-            <circle cx={characterSize/2} cy={characterSize/2} r={characterSize*1.8} fill="rgb(0, 0, 0, 1%)" />
-            <circle cx={characterSize/2} cy={characterSize/2} r={characterSize/2} fill={char.color} />
-            <circle cx={characterSize/3} cy={characterSize/3} r={2} fill="white" />
-            <circle cx={characterSize*2/3} cy={characterSize/3} r={2} fill="white" />
-            <path d={`M${characterSize/3},${characterSize*2/3} Q${characterSize/2},${characterSize*4/5} ${characterSize*2/3},${characterSize*2/3}`} stroke="white" fill="none" />
-            {/* Display distance */}
-            <text x={characterSize/2} y={-5} textAnchor="middle" fill="black" fontSize="10">
-              {char.id === 0 && "Zara"}
-              {char.id === 1 && "Grimble"}
-              {char.id === 2 && "Lady Whisper"}
-            </text>
-          </g>
-        ))}
-
-        {/* Player Character */}
-        <g transform={`translate(${player.x},${player.y})`}>
-            <circle cx={characterSize/2} cy={characterSize/2} r={characterSize*1.8} fill="rgb(0, 0, 0, 1%)" />
-            <circle cx={characterSize/2} cy={characterSize/2} r={characterSize/2} fill="red" />
-            <circle cx={characterSize/3} cy={characterSize/3} r={2} fill="white" />
-            <circle cx={characterSize*2/3} cy={characterSize/3} r={2} fill="white" />
-            <path d={`M${characterSize/3},${characterSize*2/3} Q${characterSize/2},${characterSize*4/5} ${characterSize*2/3},${characterSize*2/3}`} stroke="white" fill="none" />
-            <text x={characterSize/2} y={-5} textAnchor="middle" fill="black" fontSize="10">
-              {"You"}
-            </text>
-        </g>
-
-      </svg>
-    </div>
-  );
+    <div className="flex justify-center items-start h-screen bg-neutral-800 relative">
+    <svg 
+    width={canvasWidth} 
+    height={canvasHeight} 
+    className="bg-white" 
+    style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
+  >
+    {/* AI Characters */}
+    {characters.map(char => (
+      <g key={char.id} transform={`translate(${char.x},${char.y})`}>
+        {/* <circle cx={characterSize/2} cy={characterSize/2} r={characterSize*1.8} fill="rgba(0, 0, 0, 0.1)" /> */}
+        <circle cx={characterSize/2} cy={characterSize/2} r={characterSize/2} fill={char.color} />
+        <circle cx={characterSize/3} cy={characterSize/3} r={2} fill="white" />
+        <circle cx={characterSize*2/3} cy={characterSize/3} r={2} fill="white" />
+        <path d={`M${characterSize/3},${characterSize*2/3} Q${characterSize/2},${characterSize*4/5} ${characterSize*2/3},${characterSize*2/3}`} stroke="white" fill="none" />
+        {/* Display distance */}
+        <text x={characterSize/2} y={-5} textAnchor="middle" fill="black" fontSize="10">
+          {char.id === 0 && "Zara"}
+          {char.id === 1 && "Grimble"}
+          {char.id === 2 && "Lady Whisper"}
+        </text>
+      </g>
+    ))}
+    {/* Player Character */}
+    <g transform={`translate(${player.x},${player.y})`}>
+      {/* <circle cx={characterSize/2} cy={characterSize/2} r={characterSize*1.8} fill="rgba(0, 0, 0, 0.1)" /> */}
+      <circle cx={characterSize/2} cy={characterSize/2} r={characterSize/2} fill="red" />
+      <circle cx={characterSize/3} cy={characterSize/3} r={2} fill="white" />
+      <circle cx={characterSize*2/3} cy={characterSize/3} r={2} fill="white" />
+      <path d={`M${characterSize/3},${characterSize*2/3} Q${characterSize/2},${characterSize*4/5} ${characterSize*2/3},${characterSize*2/3}`} stroke="white" fill="none" />
+      <text x={characterSize/2} y={-5} textAnchor="middle" fill="black" fontSize="10">
+        {"You"}
+      </text>
+    </g>
+  </svg>
+  
+  <div style={{ position: 'absolute', zIndex: 10, bottom: '150px', right: '450px' }}>
+    <TreasureTrunk 
+      width={180}
+      height={130} 
+      style={{  }} 
+      onClick={handleTreasureClicked}
+    />
+  </div>
+</div>
+);
 };
 
 export default GameView;
