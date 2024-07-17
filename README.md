@@ -16,3 +16,7 @@ Here are some of the features of the game:
 React, Tailwind CSS
 #### Backend:
 Express js, MindsDB, Docker
+
+## Demo Video
+https://github.com/user-attachments/assets/a5a7a72e-62e2-4a32-870a-6cf72190a5fc
+
